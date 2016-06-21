@@ -8,8 +8,13 @@ trait ReadHelper {
 
 pub trait ReadVarInt {
     fn read_u64_varint(&mut self) -> io::Result<u64>;
+    fn read_usize_varint(&mut self) -> io::Result<usize>;
+
     /// Returns None if EOF on the first byte
     fn try_read_u64_varint(&mut self) -> io::Result<Option<u64>>;
+
+    /// Returns None if EOF on the first byte
+    fn try_read_usize_varint(&mut self) -> io::Result<Option<usize>>;
 }
 
 impl<R: io::Read> ReadHelper for R {
@@ -69,6 +74,16 @@ impl<R: io::Read> ReadVarInt for R {
         } else {
             Ok(None)
         }
+    }
+
+    #[cfg(target_arch = "x86_64")] // TODO: better cfg detection of this
+    fn read_usize_varint(&mut self) -> io::Result<usize> {
+        self.read_u64_varint().map(|u| u as usize)
+    }
+
+    #[cfg(target_arch = "x86_64")] // TODO: better cfg detection of this
+    fn try_read_usize_varint(&mut self) -> io::Result<Option<usize>> {
+        self.try_read_u64_varint().map(|o| o.map(|u| u as usize))
     }
 }
 

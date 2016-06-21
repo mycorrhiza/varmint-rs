@@ -6,6 +6,7 @@ trait WriteHelper {
 
 pub trait WriteVarInt {
     fn write_u64_varint(&mut self, val: u64) -> io::Result<()>;
+    fn write_usize_varint(&mut self, val: usize) -> io::Result<()>;
 }
 
 impl<R: io::Write> WriteHelper for R {
@@ -26,6 +27,11 @@ impl<R: io::Write> WriteVarInt for R {
                 try!(self.write_u8(current | 0x80));
             }
         }
+    }
+
+    #[cfg(target_arch = "x86_64")] // TODO: better cfg detection of this
+    fn write_usize_varint(&mut self, val: usize) -> io::Result<()> {
+        self.write_u64_varint(val as u64)
     }
 }
 
