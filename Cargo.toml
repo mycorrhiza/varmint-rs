@@ -1,6 +1,15 @@
 [package]
-name = "varint"
+name = "varmint"
 version = "0.1.0"
 authors = ["Wim Looman <wim@nemo157.com>"]
+
+description = "A Rust implementation of the varint codec as used in Google's Protocol Buffers"
+
+repository = "https://github.com/Nemo157/varmint-rs"
+
+readme = "README.md"
+keywords = ["varint", "protobuf"]
+
+license = "MIT/Apache-2.0"
 
 [dependencies]
