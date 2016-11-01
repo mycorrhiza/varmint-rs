@@ -70,7 +70,7 @@ impl<R: io::Write> WriteVarInt for R {
 
 #[cfg(test)]
 mod tests {
-    use { WriteVarInt };
+    use WriteVarInt;
 
     #[test]
     fn zero() {

@@ -188,7 +188,7 @@ impl<R: io::Read> ReadVarInt for R {
 
 #[cfg(test)]
 mod tests {
-    use { ReadVarInt };
+    use ReadVarInt;
 
     #[test]
     fn zero() {
