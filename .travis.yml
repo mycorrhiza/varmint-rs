@@ -12,6 +12,8 @@ matrix:
 
 script:
   - cargo test
+  - cargo install clippy
+  - cargo clippy -- -D warnings
 
 before_deploy:
   - cargo package

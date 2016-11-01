@@ -52,7 +52,7 @@ impl<R: io::Write> WriteVarInt for R {
     fn write_u64_varint(&mut self, mut val: u64) -> io::Result<()> {
         loop {
             let current = (val & 0x7F) as u8;
-            val = val >> 7;
+            val >>= 7;
             if val == 0 {
                 try!(self.write_u8(current));
                 return Ok(());

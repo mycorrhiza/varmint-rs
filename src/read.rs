@@ -142,7 +142,7 @@ impl<R: io::Read> ReadHelper for R {
 
         loop {
             let current = try!(self.read_u8());
-            result = result + (((current & 0x7F) as u64) << offset);
+            result += ((current & 0x7F) as u64) << offset;
             if current & 0x80 == 0 {
                 return Ok(result);
             }
