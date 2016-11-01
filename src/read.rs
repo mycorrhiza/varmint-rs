@@ -6,14 +6,113 @@ trait ReadHelper {
     fn read_remaining_u64_varint(&mut self, first: u8) -> io::Result<u64>;
 }
 
+/// A trait to allow reading integers from a byte-oriented source that were
+/// encoded in the varint format defined by Google's Protocol Buffer standard.
 pub trait ReadVarInt {
+    /// Read a varint from this object that will fit into a `u64`.
+    ///
+    /// # Errors
+    ///
+    /// If there is an error returned by the underlying source then that will
+    /// be propagated up, in that case the number of bytes that will have been
+    /// read from it is undefined.
+    ///
+    /// If the varint read exceeds the space available in a `u64` an error will
+    /// be returned and the number of bytes read from the underlying source is
+    /// undefined.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use varmint::ReadVarInt;
+    /// let mut bytes: &[u8] = &[0xB5, 0xFF, 0xAC, 0x02];
+    /// assert_eq!(bytes.read_u64_varint().unwrap(), 0x4B3FB5);
+    /// ```
     fn read_u64_varint(&mut self) -> io::Result<u64>;
+
+    /// Read a varint from this object that will fit into a `usize`.
+    ///
+    /// # Errors
+    ///
+    /// If there is an error returned by the underlying source then that will
+    /// be propagated up, in that case the number of bytes that will have been
+    /// read from it is undefined.
+    ///
+    /// If the varint read exceeds the space available in a `usize` an error
+    /// will be returned and the number of bytes read from the underlying
+    /// source is undefined.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use varmint::ReadVarInt;
+    /// let mut bytes: &[u8] = &[0xB5, 0xFF, 0xAC, 0x02];
+    /// assert_eq!(bytes.read_usize_varint().unwrap(), 0x4B3FB5);
+    /// ```
     fn read_usize_varint(&mut self) -> io::Result<usize>;
 
-    /// Returns None if EOF on the first byte
+    /// Attempt to read a varint from this object that will fit into a `u64`.
+    ///
+    /// If this object has no more data available then this will return
+    /// `Ok(None)`, if however there is a valid prefix for a varint read then
+    /// this object runs out of data before completing it that will be
+    /// propagated as a normal error.
+    ///
+    /// # Errors
+    ///
+    /// If there is an error returned by the underlying source then that will
+    /// be propagated up, in that case the number of bytes that will have been
+    /// read from it is undefined.
+    ///
+    /// If the varint read exceeds the space available in a `u64` an error will
+    /// be returned and the number of bytes read from the underlying source is
+    /// undefined.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use varmint::ReadVarInt;
+    /// let mut bytes: &[u8] = &[0xB5, 0xFF, 0xAC, 0x02];
+    /// assert_eq!(bytes.try_read_u64_varint().unwrap(), Some(0x4B3FB5));
+    /// ```
+    ///
+    /// ```rust
+    /// use varmint::ReadVarInt;
+    /// let mut bytes: &[u8] = &[];
+    /// assert_eq!(bytes.try_read_u64_varint().unwrap(), None);
+    /// ```
     fn try_read_u64_varint(&mut self) -> io::Result<Option<u64>>;
 
-    /// Returns None if EOF on the first byte
+    /// Attempt to read a varint from this object that will fit into a `usize`.
+    ///
+    /// If this object has no more data available then this will return
+    /// `Ok(None)`, if however there is a valid prefix for a varint read then
+    /// this object runs out of data before completing it that will be
+    /// propagated as a normal error.
+    ///
+    /// # Errors
+    ///
+    /// If there is an error returned by the underlying source then that will
+    /// be propagated up, in that case the number of bytes that will have been
+    /// read from it is undefined.
+    ///
+    /// If the varint read exceeds the space available in a `usize` an error
+    /// will be returned and the number of bytes read from the underlying
+    /// source is undefined.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use varmint::ReadVarInt;
+    /// let mut bytes: &[u8] = &[0xB5, 0xFF, 0xAC, 0x02];
+    /// assert_eq!(bytes.try_read_usize_varint().unwrap(), Some(0x4B3FB5));
+    /// ```
+    ///
+    /// ```rust
+    /// use varmint::ReadVarInt;
+    /// let mut bytes: &[u8] = &[];
+    /// assert_eq!(bytes.try_read_usize_varint().unwrap(), None);
+    /// ```
     fn try_read_usize_varint(&mut self) -> io::Result<Option<usize>>;
 }
 

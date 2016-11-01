@@ -4,8 +4,41 @@ trait WriteHelper {
     fn write_u8(&mut self, val: u8) -> io::Result<()>;
 }
 
+/// A trait to allow writing integers to a byte-oriented sink in the varint
+/// format defined by Google's Protocol Buffer standard.
 pub trait WriteVarInt {
+    /// Write a `u64` to this object encoded as a varint.
+    ///
+    /// # Errors
+    ///
+    /// This function will return the first error returned by the underlying
+    /// sink.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use varmint::WriteVarInt;
+    /// let mut bytes = vec![];
+    /// bytes.write_u64_varint(0x4B3FB5).unwrap();
+    /// assert_eq!(&bytes[..], &[0xB5, 0xFF, 0xAC, 0x02]);
+    /// ```
     fn write_u64_varint(&mut self, val: u64) -> io::Result<()>;
+
+    /// Write a `usize` to this object encoded as a varint.
+    ///
+    /// # Errors
+    ///
+    /// This function will return the first error returned by the underlying
+    /// sink.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use varmint::WriteVarInt;
+    /// let mut bytes = vec![];
+    /// bytes.write_usize_varint(0x4B3FB5).unwrap();
+    /// assert_eq!(&bytes[..], &[0xB5, 0xFF, 0xAC, 0x02]);
+    /// ```
     fn write_usize_varint(&mut self, val: usize) -> io::Result<()>;
 }
 
