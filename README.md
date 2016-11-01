@@ -1,4 +1,4 @@
-# varmint [![travis-badge][]][travis] [![cargo-badge][]][cargo] [![license-badge][]][license]
+# varmint [![travis-badge][]][travis] [![cargo-badge][]][cargo] ![license-badge][]
 
 A Rust implementation of the varint codec as used in [Google's Protocol
 Buffers][protobuf]. Adds `read_*`/`write_*` methods for various sizes of varints
