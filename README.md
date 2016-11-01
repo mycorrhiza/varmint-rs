@@ -8,8 +8,8 @@ on top of the standard IO traits.
 
 This project uses [clippy][] and denies warnings in CI builds. To ensure your
 changes will be accepted please check them with `cargo clippy` (available via
-`cargo install clippy`) before submitting a pull request (along with `cargo
-test` as usual).
+`cargo install clippy` on nightly rust) before submitting a pull request (along
+with `cargo test` as usual).
 
 ## License
 
