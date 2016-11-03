@@ -15,6 +15,8 @@
 
 mod read;
 mod write;
+mod len;
 
 pub use read::ReadVarInt;
 pub use write::WriteVarInt;
+pub use len::{ len_u64_varint, len_usize_varint };
