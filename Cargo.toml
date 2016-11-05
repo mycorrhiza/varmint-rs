@@ -1,6 +1,6 @@
 [package]
 name = "varmint"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Wim Looman <wim@nemo157.com>"]
 
 description = "A Rust implementation of the varint codec as used in Google's Protocol Buffers"
