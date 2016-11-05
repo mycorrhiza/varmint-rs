@@ -26,8 +26,8 @@ Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you shall be dual licensed as above, without any
 additional terms or conditions.
 
-[travis-badge]: https://img.shields.io/travis/Nemo157/varmint-rs/master.svg?style=flat-square
-[travis]: https://travis-ci.org/Nemo157/varmint-rs
+[travis-badge]: https://img.shields.io/travis/mycorrhiza/varmint-rs/master.svg?style=flat-square
+[travis]: https://travis-ci.org/mycorrhiza/varmint-rs
 [cargo-badge]: https://img.shields.io/crates/v/varmint.svg?style=flat-square
 [cargo]: https://crates.io/crates/varmint
 [license-badge]: https://img.shields.io/badge/license-MIT/Apache--2.0-lightgray.svg?style=flat-square
