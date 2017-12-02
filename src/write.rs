@@ -62,8 +62,9 @@ impl<R: io::Write> WriteVarInt for R {
         }
     }
 
-    #[cfg(target_arch = "x86_64")] // TODO: better cfg detection of this
     fn write_usize_varint(&mut self, val: usize) -> io::Result<()> {
+        // Note: assumes that `usize` is not larger than 64bits, which is the case for every single
+        // platform supported by Rust today.
         self.write_u64_varint(val as u64)
     }
 }

@@ -175,14 +175,37 @@ impl<R: io::Read> ReadVarInt for R {
         }
     }
 
-    #[cfg(target_arch = "x86_64")] // TODO: better cfg detection of this
     fn read_usize_varint(&mut self) -> io::Result<usize> {
-        self.read_u64_varint().map(|u| u as usize)
+        // Note: assumes that `usize` is not larger than 64bits, which is the case for every single
+        // platform supported by Rust today.
+        let val = self.read_u64_varint()?;
+        if val <= usize::max_value() as u64 {
+            Ok(val as usize)
+        } else {
+            Err(io::Error::new(
+                io::ErrorKind::Other,
+                "varint exceeded usize maximum bits"))
+        }
     }
 
-    #[cfg(target_arch = "x86_64")] // TODO: better cfg detection of this
     fn try_read_usize_varint(&mut self) -> io::Result<Option<usize>> {
-        self.try_read_u64_varint().map(|o| o.map(|u| u as usize))
+        // Note: assumes that `usize` is not larger than 64bits, which is the case for every single
+        // platform supported by Rust today.
+        let val = self.try_read_u64_varint()?;
+        match val {
+            Some(v) => {
+                if v <= usize::max_value() as u64 {
+                    Ok(Some(v as usize))
+                } else {
+                    Err(io::Error::new(
+                        io::ErrorKind::Other,
+                        "varint exceeded usize maximum bits"))
+                }
+            }
+            None => {
+                Ok(None)
+            }
+        }
     }
 }
 
