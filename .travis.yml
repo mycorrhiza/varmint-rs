@@ -2,20 +2,25 @@ language: rust
 sudo: false
 cache: cargo
 rust:
-  - nightly
+  - nightly-2018-04-19
   - beta
   - stable
 
 env:
   global:
+    - CLIPPY_VERSION=0.0.195
     - secure: "IatXdIcbRx2ISjjF/QiowKsitm0jusckrrkwMHRvrFpSgIDFmKHT0njgTmbDCA16eE/xJAuBd5pGyrIObzgUPiCS131rVNnCiz/vIkz8O+jKrB3bdAxHJcOzOtOj/4MroV+Yf7pmmM40C+pNkJxE+Jsr6okO2Weo7aDqpMsJZ43m+d8iwmFoBtOzhAUTFqp1uhh5XaCiSEXt28jjyuIssz7FwuwDSMIORx+0kYSkOq0LqQqcYlk9iktDSWchLC4aTVyPWN9v7phtHt64DRHnIsy0x/y1keG9DafoTzIrhNTi5qiW0cvONXOiJnNtO0iqbUWnMXa+/TjrlS7IoIwgmSKzjCFy/MdXsbwgKMgdFjaeUms05EReUdmnq9idXXAoSFt8CVb17wovBthuevpB17y2LsNA3yqUyz/79ySaS38GNxSXXpt8fsSHcHqMu799psc641m2OaZuNjjkGqRoCQRrgvYK8Tn5bzujOa/vj4h2J1hioY0Y/kp6sH/q+rccIFs2lMFZfHQlJXfn02wdIuyHNG0Aj68gv+8PlAuk9Qi4jeCk84WfW+Rvh/NMpl6fsGSFWemSfgmpxmEy7ZtFRc0wKpK6zj9rFndREGLutX0+rOciulifkPDW97BqeK9867Gric4lqAfBieMxLHl5Z2/p3lUE98Mly9bDRhg3lfA="
 
 before_script:
-  - sh -c 'if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]]; then cargo install clippy; fi'
+  - case "$TRAVIS_RUST_VERSION" in nightly*)
+      cargo install clippy --vers $CLIPPY_VERSION --force;
+    esac
 
 script:
   - cargo test
-  - sh -c 'if [[ "$TRAVIS_RUST_VERSION" == "nightly" ]]; then cargo clippy -- -D warnings; fi'
+  - case "$TRAVIS_RUST_VERSION" in nightly*)
+      cargo clippy -- -D warnings;
+    esac
 
 before_deploy:
   - cargo package
