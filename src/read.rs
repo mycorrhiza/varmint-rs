@@ -134,15 +134,15 @@ impl<R: io::Read> ReadHelper for R {
 
     fn read_remaining_u64_varint(&mut self, first: u8) -> io::Result<u64> {
         if first & 0x80 == 0 {
-            return Ok(first as u64);
+            return Ok(u64::from(first));
         }
 
-        let mut result = (first & 0x7F) as u64;
+        let mut result = u64::from(first & 0x7F);
         let mut offset = 7;
 
         loop {
             let current = try!(self.read_u8());
-            result += ((current & 0x7F) as u64) << offset;
+            result += u64::from(current & 0x7F) << offset;
             if current & 0x80 == 0 {
                 return Ok(result);
             }
